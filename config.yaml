@@ -5,10 +5,9 @@ dataset:
   download_required : False
 train_val:
   val_size : 0.2
-  n_days_in : 1
+  n_days_in : 10
   n_days_out : 1
-  hidden_units : [50]
-  dropout : 0.2
+  hidden_units : [32]
   batch_size : 32
   epochs : 200
   model_path : saved_model\

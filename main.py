@@ -18,14 +18,13 @@ val_size = config["train_val"]["val_size"]
 n_days_in = config["train_val"]["n_days_in"]
 n_days_out = config["train_val"]["n_days_out"]
 hidden_units = config["train_val"]["hidden_units"]
-dropout = config["train_val"]["dropout"]
 batch_size = config["train_val"]["batch_size"]
 epochs = config["train_val"]["epochs"]
 model_path = config["train_val"]["model_path"]
 model_name = config["train_val"]["model_name"]
 output_path = config["train_val"]["output_path"]
 
-dates, price = load_data(data_path, data)
+dates, price = load_data(data_path, data, days)
 
 train_dates, train_price, test_dates, test_price = split_data(dates, price, val_size)
 line_plot(convert(dates), price, convert(test_dates), test_price,

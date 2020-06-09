@@ -21,9 +21,11 @@ def download_and_save_data(data_path, data, days):
         file.create_dataset("Price", data=prices)
 
 
-def load_data(data_path, data):
+def load_data(data_path, data, days):
     print('Loading data')
     filename = data + '.h5'
+    if len(os.listdir(data_path)) == 0:
+        download_and_save_data(data_path, data, days)
     with h5py.File(os.path.join(data_path, filename), 'r') as file:
         dates = file["Date"]
         price = file["Price"]
