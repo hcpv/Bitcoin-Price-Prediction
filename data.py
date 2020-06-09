@@ -1,12 +1,11 @@
-import pandas as pd
 import yfinance as yf
 import h5py
-import yaml
 import os
 import numpy as np
 
 
 def download_and_save_data(data_path, data, days):
+    print('Downloading data')
     filename = data + '.h5'
     df = yf.download([data])
     df = df.filter(['Close'])
@@ -18,11 +17,12 @@ def download_and_save_data(data_path, data, days):
         prices.append(price)
 
     with h5py.File(os.path.join(data_path, filename), 'w') as file:
-        date_dataset = file.create_dataset("Date", data=dates)
-        price_dataset = file.create_dataset("Price", data=prices)
+        file.create_dataset("Date", data=dates)
+        file.create_dataset("Price", data=prices)
 
 
 def load_data(data_path, data):
+    print('Loading data')
     filename = data + '.h5'
     with h5py.File(os.path.join(data_path, filename), 'r') as file:
         dates = file["Date"]
@@ -32,7 +32,20 @@ def load_data(data_path, data):
         return dates, price
 
 
-def transform_split_data(data, n_days_in, n_days_out, val_size):
+def split_data(X, y, val_size):
+    X = np.array(X)
+    y = np.array(y)
+    size = X.shape[0]
+    split = size - val_size * size
+    split = int(split)
+    X_train = X[:split, :]
+    y_train = y[:split, :]
+    X_test = X[split:, :]
+    y_test = y[split:, :]
+    return X_train, y_train, X_test, y_test
+
+
+def transform_data(data, n_days_in, n_days_out):
     X, y = [], []
     for i in range(len(data)):
         in_end = i + n_days_in
@@ -47,16 +60,5 @@ def transform_split_data(data, n_days_in, n_days_out, val_size):
         y.append(data_y)
 
     X = np.array(X)
-    y = np.array(y)
-    size = X.shape[0]
-    split = size - val_size * size
-    split = int(split)
-    X_train = X[:split, :, :]
-    y_train = y[:split, :, 0]
-    X_test = X[split:, :, :]
-    y_test = y[split:, :, 0]
-    print(X_train.shape)
-    print(y_train.shape)
-    print(X_test.shape)
-    print(y_test.shape)
-    return X_train, y_train, X_test, y_test
+    y = np.array(y)[:, :, 0]
+    return X, y

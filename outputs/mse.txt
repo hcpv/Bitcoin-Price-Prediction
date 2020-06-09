@@ -1,0 +1,4 @@
+lstm_3_layers_in_30_out_1:364.1578800945968
+lstm_1_layers_in_30_out_1:363.78026826971313
+lstm_1_layers_in_10_out_1:376.08861756545156
+lstm_1_layers_in_1_out_1:340.07526284054484

@@ -1,1 +1,1 @@
-from .lstm import lstm_shallow
+from .networks import lstm
